@@ -17,12 +17,12 @@ function ProductDetailsScreen() {
   const product = products.find((p) => p.id.toString() === id);
 
   const [selectedSize, setSelectedSize] = useState("S");
-  const [selectedNumbber, setSelectedNumber] = useState(0);
+  // const [selectedNumbber, setSelectedNumber] = useState(0);
 
-  useEffect(() => {
-    const numberSize = SIZES.indexOf(selectedSize);
-    setSelectedNumber(numberSize);
-  }, [selectedSize]);
+  // useEffect(() => {
+  //   const numberSize = SIZES.indexOf(selectedSize);
+  //   setSelectedNumber(numberSize);
+  // }, [selectedSize]);
 
   const addToCart = () => {
     if (!product) return;
@@ -45,33 +45,6 @@ function ProductDetailsScreen() {
       <Text>Select Size</Text>
 
       {/* <View style={styles.sizes}>
-        {product.prices.map((data, index) => (
-          <Pressable
-            onPress={() => setSelectedSize(data.size)}
-            style={[
-              styles.size,
-              {
-                backgroundColor:
-                  selectedSize === data.size ? "gainsboro" : "white",
-              },
-            ]}
-            key={index.toString()}
-          >
-            <Text
-              style={[
-                styles.sizeText,
-                {
-                  color: selectedSize === data.size ? "black" : "gray",
-                },
-              ]}
-            >
-              {data.size}
-            </Text>
-          </Pressable>
-        ))}
-      </View> */}
-
-      <View style={styles.sizes}>
         {SIZES.map((size) => (
           <Pressable
             onPress={() => setSelectedSize(size)}
@@ -99,6 +72,32 @@ function ProductDetailsScreen() {
       </View>
       <Text style={styles.price}>${PRICES[selectedNumbber]}</Text>
       <Button onPress={() => addToCart()} text="Add to cart" />
+    </View> */}
+      <View style={styles.sizes}>
+        {SIZES.map((size) => (
+          <Pressable
+            onPress={() => setSelectedSize(size)}
+            key={size}
+            style={[
+              styles.size,
+              {
+                backgroundColor: size === selectedSize ? "gainsboro" : "white",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.sizeText,
+                { color: size === selectedSize ? "black" : "gray" },
+              ]}
+            >
+              {size}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+      <Text style={styles.price}>Price: ${product.price.toFixed(2)}</Text>
+      <Button onPress={addToCart} text="Add to cart" />
     </View>
   );
 }
