@@ -12,6 +12,9 @@ function index() {
       <Link href={"/(admin)"} asChild>
         <Button text="Admin" />
       </Link>
+      <Link href={"/LoginPage"} asChild>
+        <Button text="Sign-in" />
+      </Link>
     </View>
   );
 }
