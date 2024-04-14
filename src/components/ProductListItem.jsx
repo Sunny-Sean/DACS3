@@ -7,6 +7,7 @@ export const defaultPizzaImage =
 const ProductListItem = ({ product }) => {
   // Lấy thông tin tuyến đường
   const segment = useSegments();
+  // console.log(product);
   // console.log(segment);
 
   return (

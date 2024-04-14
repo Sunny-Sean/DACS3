@@ -5,11 +5,13 @@ import { useContext } from "react";
 import { useCart } from "../providers/CartProvider";
 import CartListItem from "../components/CartListItem";
 import Button from "../components/Button";
+import { Stack } from "expo-router";
 
 function CartScreen() {
   const { items, total } = useCart();
   return (
-    <View style={{ padding: 10 }}>
+    <View style={{ padding: 10, flex: 1, justifyContent: "center" }}>
+      <Stack.Screen options={{ title: "Cart" }} />
       <FlatList
         data={items}
         renderItem={({ item }) => <CartListItem cartItem={item} />}
