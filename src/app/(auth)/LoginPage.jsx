@@ -14,11 +14,10 @@ import * as Yup from "yup";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../constants/theme";
 import LottieView from "lottie-react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../../components/Button2";
 import BackBtn from "../../components/BackBtn";
 import { Link, Stack } from "expo-router";
+import { supabase } from "../../lib/supabase";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
@@ -35,19 +34,17 @@ function LoginPage() {
   const animation = useRef(null);
   const [loader, setLoader] = useState(false);
   const [obsecureText, setObsecureText] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function inValidForm() {
-    Alert.alert("Invalid Form", "Please provide all required fields", [
-      {
-        text: "Cancel",
-        onPress: () => {},
-      },
-      {
-        text: "Continue",
-        onPress: () => {},
-      },
-      { defaultIndex: 1 },
-    ]);
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
   }
 
   function loginFunc() {}
@@ -61,7 +58,6 @@ function LoginPage() {
     >
       <Stack.Screen options={{ title: "Login" }} />
       <View style={{ marginHorizontal: 20, marginTop: 50 }}>
-        {/* <BackBtn /> */}
         <LottieView
           autoPlay
           ref={animation}
@@ -107,8 +103,8 @@ function LoginPage() {
                     onBlur={() => {
                       setFieldTouched("email", "");
                     }}
-                    value={values.email}
-                    onChangeText={handleChange("email")}
+                    value={email}
+                    onChangeText={setEmail}
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={{ flex: 1 }}
@@ -142,8 +138,8 @@ function LoginPage() {
                     onBlur={() => {
                       setFieldTouched("password", "");
                     }}
-                    value={values.password}
-                    onChangeText={handleChange("password")}
+                    value={password}
+                    onChangeText={setPassword}
                     autoCapitalize="none"
                     autoCorrect={false}
                     style={{ flex: 1 }}
@@ -167,20 +163,13 @@ function LoginPage() {
 
               <Button
                 loader={loader}
-                title={"L O G I N"}
-                onPress={isValid ? handleSubmit : inValidForm}
+                title={loading ? "Waiting for login..." : "L o g i n"}
+                // onPress={isValid ? handleSubmit : inValidForm}
+                onPress={signInWithEmail}
+                disabled={loading}
                 isValid={isValid}
               />
 
-              {/* <Text
-                style={styles.registration}
-                onPress={() => {
-                  navigation.navigate("signUp");
-                }}
-              >
-                {" "}
-                Register{" "}
-              </Text> */}
               <Link href="/SignUp" style={styles.registration}>
                 Create an account
               </Link>

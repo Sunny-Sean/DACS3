@@ -8,11 +8,12 @@ import {
 import React from "react";
 import { COLORS } from "../constants/theme";
 
-const Button = ({ title, onPress, isValid, loader }) => {
+const Button = ({ title, onPress, isValid, loader, disabled }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={styles.btnStyle(!isValid ? COLORS.gray : COLORS.primary)}
+      disabled={disabled}
     >
       {!loader ? (
         <Text style={styles.btnTxt}>{title}</Text>
