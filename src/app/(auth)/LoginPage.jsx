@@ -164,7 +164,6 @@ function LoginPage() {
               <Button
                 loader={loader}
                 title={loading ? "Waiting for login..." : "L o g i n"}
-                // onPress={isValid ? handleSubmit : inValidForm}
                 onPress={signInWithEmail}
                 disabled={loading}
                 isValid={isValid}

@@ -1,11 +1,9 @@
 import { FlatList, Platform, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useContext } from "react";
-
 import { useCart } from "../providers/CartProvider";
 import CartListItem from "../components/CartListItem";
 import Button from "../components/Button";
-import { Stack } from "expo-router";
+import { Link, Redirect, Stack } from "expo-router";
 
 function CartScreen() {
   const { items, total } = useCart();
@@ -21,6 +19,7 @@ function CartScreen() {
         Total: ${total}
       </Text>
       <Button text="Checkout" />
+      <Link href={"/(user)/orders"}>CLick</Link>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );

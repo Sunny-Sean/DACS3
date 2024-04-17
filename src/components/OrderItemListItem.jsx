@@ -14,7 +14,12 @@ function OrderItemListItem({ item }) {
     <Link href={`/${segment[0]}/menu/${item.products.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
-          source={{ uri: item.products.image || defaultPizzaImage }}
+          // source={{ uri: item.products.image || defaultPizzaImage }}
+          source={{
+            uri:
+              item.products.image ||
+              "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+          }}
           style={styles.image}
           resizeMode="contain"
         />

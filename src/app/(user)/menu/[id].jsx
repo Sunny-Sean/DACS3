@@ -1,28 +1,34 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import products from "../../../../assets/data/products";
 import defaultPizzaImage from "../../../components/ProductListItem";
 import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { useCart } from "../../../providers/CartProvider";
+import { useProduct } from "../../../api/products/index";
 
 const SIZES = ["S", "M", "L", "XL"];
 const PRICES = ["1.38", "3.15", "4.29", "5.57"];
 
 function ProductDetailsScreen() {
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+
+  const { data: product, error, isLoading } = useProduct(id);
+
   const router = useRouter();
   const { addItem } = useCart();
 
-  const product = products.find((p) => p.id.toString() === id);
+  // const product = products.find((p) => p.id.toString() === id);
 
   const [selectedSize, setSelectedSize] = useState("S");
-  // const [selectedNumbber, setSelectedNumber] = useState(0);
-
-  // useEffect(() => {
-  //   const numberSize = SIZES.indexOf(selectedSize);
-  //   setSelectedNumber(numberSize);
-  // }, [selectedSize]);
 
   const addToCart = () => {
     if (!product) return;
@@ -30,15 +36,24 @@ function ProductDetailsScreen() {
     router.push("/cart");
   };
 
-  if (!product) {
-    return <Text>Product not found</Text>;
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Faild to fetch data</Text>;
   }
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product?.name }} />
       <Image
-        source={{ uri: product.image || defaultPizzaImage }}
+        // source={{ uri: product?.image || defaultPizzaImage }}
+        source={{
+          uri:
+            product?.image ||
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+        }}
         style={styles.image}
       />
 

@@ -1,18 +1,17 @@
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import ProductListItem from "../../../components/ProductListItem";
-import products from "../../../../assets/data/products";
-import { useEffect } from "react";
-import { supabase } from "../../../lib/supabase";
+import { useProductList } from "../../../api/products";
 
 export default function MenuScreen() {
-  useEffect(() => {
-    async function fetchProducts() {
-      const { data, error } = await supabase.from("products").select("*");
-      // console.log(error);
-      console.log(data);
-    }
-    fetchProducts();
-  }, []);
+  const { data: products, error, isLoading } = useProductList();
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Faild to fetch data</Text>;
+  }
   return (
     <FlatList
       data={products}

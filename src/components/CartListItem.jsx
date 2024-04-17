@@ -12,7 +12,12 @@ const CartListItem = ({ cartItem }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: cartItem.product.image || defaultPizzaImage }}
+        // source={{ uri: cartItem.product.image || defaultPizzaImage }}
+        source={{
+          uri:
+            cartItem.product.image ||
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+        }}
         style={styles.image}
         resizeMode="contain"
       />

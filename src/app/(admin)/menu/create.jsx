@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, TextInput, Image, Alert } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import * as ImagePicker from "expo-image-picker";
 
@@ -7,7 +7,12 @@ import Button from "../../../components/Button";
 import { defaultPizzaImage } from "../../../components/ProductListItem";
 
 import Colors from "../../../constants/Colors";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import {
+  useInsertProduct,
+  useProduct,
+  useUpdateProduct,
+} from "../../../api/products";
 
 function CreateProductScreen() {
   const [name, setName] = useState("");
@@ -16,8 +21,30 @@ function CreateProductScreen() {
   const [image, setImage] = useState(null);
 
   // Lấy id từ url, nếu tồn tại id thì update
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  // console.log("idString: " + idString?.[0]);
+  const id = parseFloat(
+    typeof idString === "string" ? idString : idString?.[0]
+  );
+  // console.log("id: " + id);
   const isUpdating = !!id;
+
+  // Them san pham moi
+  const { mutate: insertProduct } = useInsertProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
+  const { data: updatingProduct } = useProduct(id);
+
+  // console.log(updatingProduct);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (updatingProduct) {
+      setName(updatingProduct.name);
+      setPrice(updatingProduct.price.toString());
+      setImage(updatingProduct.image);
+    }
+  }, [updatingProduct]);
 
   function resetFields() {
     setName("");
@@ -51,8 +78,15 @@ function CreateProductScreen() {
     console.warn("Creating product: ", name);
 
     // Save trong database
-
-    resetFields();
+    insertProduct(
+      { name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
   }
 
   function onUpdate() {
@@ -64,8 +98,15 @@ function CreateProductScreen() {
     console.warn("Updating product: ");
 
     // Save trong database
-
-    resetFields();
+    updateProduct(
+      { id, name, price: parseFloat(price), image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
   }
 
   function onSubmit() {
@@ -94,7 +135,7 @@ function CreateProductScreen() {
   }
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
+    // Không cần yêu cầu quyền để khởi chạy thư viện hình ảnh
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -102,7 +143,7 @@ function CreateProductScreen() {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -115,9 +156,25 @@ function CreateProductScreen() {
         options={{ title: isUpdating ? "Update Product" : "Create Product" }}
       />
       <Image
-        source={{ uri: image || defaultPizzaImage }}
+        source={{
+          uri:
+            image ||
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+        }}
         style={styles.image}
       />
+      {/* <Image
+        source={
+          isUpdating
+            ? {
+                uri: image,
+              }
+            : {
+                uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+              }
+        }
+        style={styles.image}
+      /> */}
       <Text onPress={pickImage} style={styles.textButton}>
         Select Image
       </Text>

@@ -17,7 +17,7 @@ export default function OrderDetailsScreen() {
   //   console.log(order);
   return (
     <View style={{ padding: 10, gap: 20, flex: 1 }}>
-      <Stack.Screen options={{ title: `Ordern #${id}` }} />
+      <Stack.Screen options={{ title: `Order #${id}` }} />
 
       <FlatList
         data={order.order_items}

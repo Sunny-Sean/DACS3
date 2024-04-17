@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
 
   useEffect(function () {
-    async function fetchSession() {
+    const fetchSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -33,7 +33,7 @@ export default function AuthProvider({ children }) {
       }
 
       setLoading(false);
-    }
+    };
 
     fetchSession();
     // Cập nhật lại trạng thái session khi người dùng đăng nhâp hoặc đăng xuất
@@ -42,10 +42,15 @@ export default function AuthProvider({ children }) {
     });
   }, []);
 
-  console.log(profile);
+  // console.log(profile);
   return (
     <AuthConText.Provider
-      value={{ session, loading, profile, isAdmin: profile?.group === "ADMIN" }}
+      value={{
+        session,
+        loading,
+        profile,
+        isAdmin: profile?.group === "ADMIN",
+      }}
     >
       {children}
     </AuthConText.Provider>

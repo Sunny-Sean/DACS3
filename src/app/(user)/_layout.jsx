@@ -21,13 +21,14 @@ export default function TabLayout() {
     return <Redirect href={"/LoginPage"} />;
   }
 
+  // if (!session) {
+  //   return <Redirect href={"/"} />;
+  // }
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
       }}
     >
       <Tabs.Screen name="index" options={{ href: null }} />
