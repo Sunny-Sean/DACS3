@@ -9,6 +9,7 @@ import { defaultPizzaImage } from "../../../components/ProductListItem";
 import Colors from "../../../constants/Colors";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
+  useDeleteProduct,
   useInsertProduct,
   useProduct,
   useUpdateProduct,
@@ -32,6 +33,7 @@ function CreateProductScreen() {
   // Them san pham moi
   const { mutate: insertProduct } = useInsertProduct();
   const { mutate: updateProduct } = useUpdateProduct();
+  const { mutate: deleteProduct } = useDeleteProduct();
   const { data: updatingProduct } = useProduct(id);
 
   // console.log(updatingProduct);
@@ -118,6 +120,12 @@ function CreateProductScreen() {
   }
 
   function onDelete() {
+    deleteProduct(id, {
+      onSuccess: () => {
+        resetFields();
+        router.replace("/(admin)");
+      },
+    });
     console.warn("Delete");
   }
 
