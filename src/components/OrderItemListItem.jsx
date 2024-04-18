@@ -6,35 +6,33 @@ import { defaultPizzaImage } from "./ProductListItem";
 import { Link, useSegments } from "expo-router";
 
 function OrderItemListItem({ item }) {
-  const segment = useSegments();
+  // const segment = useSegments();
   // console.log(segment);
   // console.log(item.products.id);
 
   return (
-    <Link href={`/${segment[0]}/menu/${item.products.id}`} asChild>
-      <Pressable style={styles.container}>
-        <Image
-          // source={{ uri: item.products.image || defaultPizzaImage }}
-          source={{
-            uri:
-              item.products.image ||
-              "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-          }}
-          style={styles.image}
-          resizeMode="contain"
-        />
-        <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{item.products.name}</Text>
-          <View style={styles.subtitleContainer}>
-            <Text style={styles.price}>${item.products.price.toFixed(2)}</Text>
-            <Text>Size: {item.size}</Text>
-          </View>
+    <View style={styles.container}>
+      <Image
+        // source={{ uri: item.products.image || defaultPizzaImage }}
+        source={{
+          uri:
+            item.products.image ||
+            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
+        }}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <View style={{ flex: 1 }}>
+        <Text style={styles.title}>{item.products.name}</Text>
+        <View style={styles.subtitleContainer}>
+          <Text style={styles.price}>${item.products.price.toFixed(2)}</Text>
+          <Text>Size: {item.size}</Text>
         </View>
-        <View style={styles.quantitySelector}>
-          <Text style={styles.quantity}>{item.quantity}</Text>
-        </View>
-      </Pressable>
-    </Link>
+      </View>
+      <View style={styles.quantitySelector}>
+        <Text style={styles.quantity}>{item.quantity}</Text>
+      </View>
+    </View>
   );
 }
 

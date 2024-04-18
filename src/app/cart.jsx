@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import { Link, Redirect, Stack } from "expo-router";
 
 function CartScreen() {
-  const { items, total } = useCart();
+  const { items, total, checkout } = useCart();
   return (
     <View style={{ padding: 10, flex: 1, justifyContent: "center" }}>
       <Stack.Screen options={{ title: "Cart" }} />
@@ -18,8 +18,8 @@ function CartScreen() {
       <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 500 }}>
         Total: ${total}
       </Text>
-      <Button text="Checkout" />
-      <Link href={"/(user)/orders"}>CLick</Link>
+      <Button onPress={checkout} text="Checkout" />
+      {/* <Link href={"/(user)/orders"}>CLick</Link> */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
