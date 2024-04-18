@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { useCart } from "../../../providers/CartProvider";
 import { useProduct } from "../../../api/products/index";
+import RemoteImage from "../../../components/RemoteImage";
 
 const SIZES = ["S", "M", "L", "XL"];
 const PRICES = ["1.38", "3.15", "4.29", "5.57"];
@@ -47,13 +48,11 @@ function ProductDetailsScreen() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product?.name }} />
-      <Image
-        // source={{ uri: product?.image || defaultPizzaImage }}
-        source={{
-          uri:
-            product?.image ||
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-        }}
+      <RemoteImage
+        path={product?.image}
+        fallback={
+          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png"
+        }
         style={styles.image}
       />
 

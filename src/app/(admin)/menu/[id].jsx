@@ -16,6 +16,7 @@ import { useCart } from "../../../providers/CartProvider";
 import { FontAwesome, AntDesign, Entypo } from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import { useProduct } from "../../../api/products";
+import RemoteImage from "../../../components/RemoteImage";
 
 const SIZES = ["S", "M", "L", "XL"];
 const PRICES = ["1.38", "3.15", "4.29", "5.57"];
@@ -75,15 +76,11 @@ function ProductDetailsScreen() {
         }}
       />
       <Stack.Screen options={{ title: product?.name }} />
-      <Image
-        source={{
-          uri:
-            product?.image ||
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-        }}
-        // source={{
-        //   uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-        // }}
+      <RemoteImage
+        path={product?.image}
+        fallback={
+          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png"
+        }
         style={styles.image}
       />
 
