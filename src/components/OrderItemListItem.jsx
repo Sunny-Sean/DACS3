@@ -1,24 +1,16 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import Colors from "../constants/Colors";
-import { OrderItem } from "../types";
-import { defaultPizzaImage } from "./ProductListItem";
-import { Link, useSegments } from "expo-router";
+import RemoteImage from "./RemoteImage";
 
 function OrderItemListItem({ item }) {
-  // const segment = useSegments();
-  // console.log(segment);
-  // console.log(item.products.id);
-
   return (
     <View style={styles.container}>
-      <Image
-        // source={{ uri: item.products.image || defaultPizzaImage }}
-        source={{
-          uri:
-            item.products.image ||
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-        }}
+      <RemoteImage
+        path={item.products.image}
+        fallback={
+          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png"
+        }
         style={styles.image}
         resizeMode="contain"
       />

@@ -97,17 +97,19 @@ function CreateProductScreen() {
     );
   }
 
-  function onUpdate() {
+  async function onUpdate() {
     // Xác thực đầu vào sai thì return
     if (!validateInput()) {
       return;
     }
 
+    const imagePath = await uploadImage();
+
     // console.warn("Updating product: ");
 
     // Save trong database
     updateProduct(
-      { id, name, price: parseFloat(price), image },
+      { id, name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
           resetFields();

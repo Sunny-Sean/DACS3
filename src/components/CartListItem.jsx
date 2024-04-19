@@ -6,18 +6,17 @@ import { Link } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import { useCart } from "../providers/CartProvider";
 import { defaultPizzaImage } from "./ProductListItem";
+import RemoteImage from "./RemoteImage";
 
 const CartListItem = ({ cartItem }) => {
   const { updateQuantity } = useCart();
   return (
     <View style={styles.container}>
-      <Image
-        // source={{ uri: cartItem.product.image || defaultPizzaImage }}
-        source={{
-          uri:
-            cartItem.product.image ||
-            "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png",
-        }}
+      <RemoteImage
+        path={cartItem.product.image}
+        fallback={
+          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png"
+        }
         style={styles.image}
         resizeMode="contain"
       />
